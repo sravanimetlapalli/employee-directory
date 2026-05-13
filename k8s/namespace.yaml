@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: namespace
+metadata:
+  name: employee-directory
+  labels:
+    name: employee-directory
+    environment: dev

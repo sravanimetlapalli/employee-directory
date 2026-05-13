@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: employeedirectory-config
+  namespace: employee-directory
+data:
+  # DB CONFIG
+  POSTGRES_DB: "employeedb"
+  POSTGRES_USER: "admin"
+  DB_HOST: "postgres-service"
+  DB_PORT: "5432"
+
+  # backend config
+  BACKEND_PORT: "8000"
+  FRONTEND_URL: "http://frontend-service"
+
+  # Environment
+  ENVIRONMENT: "dev"
+

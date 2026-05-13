@@ -1,0 +1,45 @@
+# postgres service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: employee-directory
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  ClusterIP: None
+---
+#backend service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: employee-directory
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 8000
+    targetPort: 8000
+  type: ClusterIP
+---
+
+#frontend service
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: employee-directory
+spec:
+  selector:
+    app: frontend-service
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+
+
+
