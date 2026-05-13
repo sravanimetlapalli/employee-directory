@@ -4,7 +4,7 @@ A full stack 3 tier Employee Directory application built and deployed using mode
 
 # Architecture
 <p align="center">
-  <img src="./architecture.png" width="700"/>
+  <img src="./Architecture.png" width="700"/>
 </p>
 
 #  Local Development
