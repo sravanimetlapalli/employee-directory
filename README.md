@@ -3,28 +3,9 @@
 A full stack 3 tier Employee Directory application built and deployed using modern DevOps practices on Microsoft Azure
 
 # Architecture
-Internet
-    ↓
-Azure Application Gateway
-    ↓
-AGIC (reads ingress.yaml)
-    ↓            ↓
-frontend-service  /api → backend-service
-    ↓                        ↓
-React pods              FastAPI pods
-                              ↓
-                      postgres-service
-                              ↓
-                       PostgreSQL pod
-
-# project structure
-employee-directory 
-| - frontend (React + Typescript)
-| - backend (FastAPI + Python)
-| - terraform (Azure infrastructure)
-| - k8s (Kubernetes Manifests)
-| - docker-compose.yml (Local development)
-| - .github/workflows (CI/CD pipelines)
+<p align="center">
+  <img src="./architecture.png" width="700"/>
+</p>
 
 #  Local Development
 
@@ -36,8 +17,8 @@ employee-directory
 ## Run locally
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/employee-directory-aks
-cd employee-directory-aks
+git clone https://github.com/sravanimetlapalli/employee-directory.git
+cd employee-directory
 
 # Start all services
 docker-compose up --build
