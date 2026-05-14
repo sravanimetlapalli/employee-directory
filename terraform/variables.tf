@@ -62,6 +62,12 @@ variable "subnet_address_prefix"{
     default = [ "10.240.0.0/16" ]
 }
 
+variable "appgw_subnet_address_prefix" {
+    description = "Address for Application gateway"
+    type = list(string)
+    default = [ "10.241.0.0/16" ]
+}
+
 // aks cluster
 
 variable "aks_cluster_name"{

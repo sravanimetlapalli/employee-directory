@@ -29,3 +29,8 @@ variable "subnet_address_prefix" {
   type = list(string)
   default = [ "10.270.0.0/16" ]
 }
+
+variable "appgw_subnet_address_prefix" {
+  description = "Subnet for application gateway"
+  default = ["10.241.0.0/16"]
+}

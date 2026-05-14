@@ -58,6 +58,16 @@ variable "subnet_id" {
   type = string 
 }
 
+variable "appgw_subnet_id"{
+  description = "Application gateway subnet id - comes from VNET module"
+  type = string
+}
+
+variable "vnet_id" {
+  description = "VNET resource ID — used for AGIC Network Contributor role"
+  type        = string
+}
+
 variable "log_analytics_id" {
   description = "Log analytics id - comes from log analytics module"
   type = string

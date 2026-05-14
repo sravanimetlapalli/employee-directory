@@ -30,7 +30,8 @@ module "vnet" {
   environment           = var.environment
   vnet_address_space    = var.vnet_address_space
   subnet_address_prefix = var.subnet_address_prefix
-}
+  appgw_subnet_address_prefix = var.appgw_subnet_address_prefix
+  }
 
 module "acr" {
   source = "./modules/acr"
@@ -60,7 +61,8 @@ module "aks" {
   admin_group_object_ids = var.admin_group_object_ids
   environment            = var.environment
   project_name           = var.project_name
-
+  appgw_subnet_id        = module.vnet.appgw_subnet_id
+  vnet_id                = module.vnet.vnet_id
   # Allow AKS to pull images from ACR
   acr_id = module.acr.acr_id
 }
