@@ -10,7 +10,7 @@ spec:
   ports:
   - port: 5432
     targetPort: 5432
-  ClusterIP: None
+  clusterIP: None
 ---
 #backend service
 apiVersion: v1
@@ -35,10 +35,10 @@ metadata:
   namespace: employee-directory
 spec:
   selector:
-    app: frontend-service
+    app: frontend
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 8080
   type: ClusterIP
 
 

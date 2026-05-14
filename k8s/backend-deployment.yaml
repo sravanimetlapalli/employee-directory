@@ -18,6 +18,7 @@ spec:
       containers:
       - name: backend
         image: acremployeedirdev.azurecr.io/employee-backend:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
@@ -54,4 +55,3 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-      ImagePullPolicy: Always
