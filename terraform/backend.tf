@@ -20,7 +20,7 @@ backend "azurerm" {
     resource_group_name = "rg-terraform-state-file"
     storage_account_name = "tfstatefile2026"
     container_name = "tfstate"
-    key = "employee-directory.tfstate" // name of the statefile inside the container
+    // key = "employee-directory.tfstate" // name of the statefile inside the container - this key will be passed through backend-config during init
 }
 }
 
