@@ -1,0 +1,69 @@
+global:
+  environment: dev
+  projectName: employee-directory
+
+image:
+  registry: acremployeedirdev.azurecr.io
+  backendRepo:     employee-backend
+  frontendRepo:    employee-frontend
+  tag:             v1
+  pullPolicy:      Always
+
+namespace: dev
+
+replicaCount:
+  backend:  1
+  frontend: 1
+
+postgres:
+  user:     admin
+  password: admin123
+  db:       employeedb
+  storage:  2Gi
+  host:     postgres-service
+
+resources:
+  backend:
+    requests:
+      memory: "256Mi"
+      cpu:    "250m"
+    limits:
+      memory: "512Mi"
+      cpu:    "500m"
+  frontend:
+    requests:
+      memory: "128Mi"
+      cpu:    "100m"
+    limits:
+      memory: "256Mi"
+      cpu:    "200m"
+  postgres:
+    requests:
+      memory: "256Mi"
+      cpu:    "250m"
+    limits:
+      memory: "512Mi"
+      cpu:    "500m"
+
+ingress:
+  enabled:   true
+  className: azure/application-gateway
+  annotations:
+    appgw.ingress.kubernetes.io/health-probe-status-codes: "200-399"
+    appgw.ingress.kubernetes.io/request-timeout: "30"
+
+probes:
+  backend:
+    liveness:
+      initialDelaySeconds: 30
+      periodSeconds:       10
+    readiness:
+      initialDelaySeconds: 10
+      periodSeconds:       5
+  frontend:
+    liveness:
+      initialDelaySeconds: 10
+      periodSeconds:       10
+    readiness:
+      initialDelaySeconds: 5
+      periodSeconds:       5

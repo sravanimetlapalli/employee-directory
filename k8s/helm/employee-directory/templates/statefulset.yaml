@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: {{ .Values.namespace }}
+  labels:
+    app:         postgres
+    environment: {{ .Values.global.environment }}
+spec:
+  serviceName: postgres-service
+  replicas: 1
+  selector:
+    matchLabels:
+     app: postgres
+  template:
+    metadata:
+     labels:
+       app: postgres
+       environment: {{ .Values.global.environment }}
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15-alpine
+          ports:
+          - containerPort: 5432
+          env:
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: employeedirectory-config
+                key: POSTGRES_DB
+          - name: POSTGRES_USER
+            valueFrom:
+              configMapKeyRef:
+                name: employeedirectory-config
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                  name: employee-secrets
+                  key: POSTGRES_PASSWORD
+          # Persistent volume for your data
+          volumeMounts:
+          - name: postgres-storage
+            mountPath: /var/lib/postgresql/data
+            subPath: postgres
+
+          # Health checks
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - {{ .Values.postgres.user }}
+            
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - {{ .Values.postgres.user }}
+            
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          
+          resources:
+            requests:
+              memory: {{ .Values.resources.postgres.requests.memory | quote}}
+              cpu: {{ .Values.resources.postgres.requests.cpu | quote }}
+            limits:
+              memory: {{ .Values.resources.postgres.limits.memory | quote }}
+              cpu: {{ .Values.resources.postgres.limits.cpu | quote }}
+  
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: {{ .Values.postgres.storage }}

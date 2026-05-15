@@ -1,0 +1,13 @@
+apiVersion: v2
+name: employee-directory
+description: A 3-tier Employee Directory app on AKS
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - employee
+  - directory
+  - kubernetes
+  - azure
+maintainers:
+  - name: Sravani Metlapalli

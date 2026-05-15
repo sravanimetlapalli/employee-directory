@@ -1,0 +1,15 @@
+global:
+  environment: staging
+
+namespace: staging
+
+image:
+  registry:    acremployeedirstaging.azurecr.io
+  tag:         v1-staging
+
+replicaCount:
+  backend:  1
+  frontend: 1
+
+postgres:
+  storage: 2Gi

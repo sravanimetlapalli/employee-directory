@@ -1,0 +1,15 @@
+global:
+  environment: dev
+
+namespace: dev
+
+image:
+  registry: acremployeedirdev.azurecr.io
+  tag: v1
+
+replicaCount: 
+  backend: 1
+  frontend: 1
+
+postgres:
+  storage: 2Gi

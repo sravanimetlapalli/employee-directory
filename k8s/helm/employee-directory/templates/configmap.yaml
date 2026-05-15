@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: employeedirectory-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    app:         employee-directory
+    environment: {{ .Values.global.environment }}
+data:
+  # DB CONFIG
+  POSTGRES_DB: {{ .Values.postgres.db | quote }}
+  POSTGRES_USER: {{ .Values.postgres.user | quote }}
+  DB_HOST: {{ .Values.postgres.host | quote }}
+  DB_PORT: "5432"
+
+
+  # backend config
+  BACKEND_PORT: "8000"
+  FRONTEND_URL: "http://frontend-service"
+
+  # Environment
+  ENVIRONMENT:  {{ .Values.global.environment | quote }}
+

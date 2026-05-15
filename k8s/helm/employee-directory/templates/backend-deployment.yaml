@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: backend
+    environment: {{ .Values.global.environment }}
+spec:
+  replicas: {{ .Values.replicaCount.backend }}
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        environment: {{ .Values.global.environment }}
+    spec:
+      initContainers:
+        - name: run-migrations
+          image: "{{ .Values.image.registry }}/{{ .Values.image.backendRepo }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["alembic", "upgrade", "head"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: employee-secrets
+                  key:  DATABASE_URL
+      containers:
+      - name: backend
+        image: "{{ .Values.image.registry }}/{{ .Values.image.backendRepo }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: employee-secrets
+              key: DATABASE_URL
+        - name: ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+              name: employeedirectory-config
+              key: ENVIRONMENT
+        # restarts the pod if unhealthy
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: {{ .Values.probes.backend.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.probes.backend.liveness.periodSeconds }}
+          failureThreshold: 3
+        # serves traffic when ready
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: {{ .Values.probes.backend.readiness.initialDelaySeconds }}
+          periodSeconds:       {{ .Values.probes.backend.readiness.periodSeconds }}
+          failureThreshold: 3
+        resources:
+          requests:
+            memory: {{ .Values.resources.backend.requests.memory | quote }}
+            cpu: {{ .Values.resources.backend.requests.cpu | quote }}
+          limits:
+            memory: {{ .Values.resources.backend.limits.memory | quote }}
+            cpu: {{ .Values.resources.backend.limits.cpu | quote }}
